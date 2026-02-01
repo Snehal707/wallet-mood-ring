@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0b1020"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#05d9e8"/>
+      <stop offset="50%" stop-color="#7700ff"/>
+      <stop offset="100%" stop-color="#ff2a6d"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="20%" cy="30%">
+      <stop offset="0%" stop-color="#7700ff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="70%">
+      <stop offset="0%" stop-color="#ff2a6d" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <circle cx="200" cy="315" r="120" stroke="url(#grad)" stroke-width="16" fill="none" stroke-linecap="round" stroke-dasharray="300 150"/>
+  <circle cx="200" cy="315" r="40" fill="#ffffff" opacity="0.9"/>
+  <text x="380" y="280" fill="#ffffff" font-family="system-ui, sans-serif" font-size="72" font-weight="900">Wallet Mood Ring</text>
+  <text x="380" y="360" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="32" font-weight="500">Discover your wallet personality on Base</text>
+  <text x="380" y="420" fill="#05d9e8" font-family="system-ui, sans-serif" font-size="28" font-weight="600">Mint your weekly Mood Badge NFT</text>
+</svg>

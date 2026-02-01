@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjI1MzUwNCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweGFBMWNkMmY2NkJGNkQyOUEzNzYwMzUyRDRjOGY1MkQyYWMyYzdDNkUifQ",
+    "payload": "eyJkb21haW4iOiJ3YWxsZXQtbW9vZC1yaW5nLnZlcmNlbC5hcHAifQ",
+    "signature": "sbF2gfTxVcFvsX+weYdmLNFOCH10++ipnVuWIHINZaQ6DzuSDIHhArbNiR1Lps3on75qE7sWq4tKT4JMRLMRiBs="
+  },
+  "frame": {
+    "version": "1",
+    "name": "Wallet Mood Ring",
+    "iconUrl": "https://wallet-mood-ring.vercel.app/icon.svg",
+    "homeUrl": "https://wallet-mood-ring.vercel.app",
+    "imageUrl": "https://wallet-mood-ring.vercel.app/og-image.svg",
+    "splashImageUrl": "https://wallet-mood-ring.vercel.app/splash.svg",
+    "splashBackgroundColor": "#0b1020",
+    "buttonTitle": "Check Your Wallet Mood"
+  }
+}
