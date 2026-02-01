@@ -67,8 +67,9 @@ function ResultPage() {
     return null;
   }, [capabilities]);
   
-  // Gasless is only available when wallet supports paymaster (Coinbase Smart Wallet)
-  const isGasless = !!paymasterCapability;
+  // Gasless is only available when wallet supports paymaster AND paymaster URL is configured
+  const paymasterUrl = PAYMASTER_CONFIG.url;
+  const isGasless = !!paymasterCapability && !!paymasterUrl;
   
   // Network detection
   const chainId = useChainId();
@@ -176,11 +177,11 @@ function ResultPage() {
 
       // Use paymaster ONLY if wallet supports it (e.g., Coinbase Smart Wallet)
       // Regular wallets (MetaMask, OKX) don't support wallet_sendCalls
-      const paymasterUrl = PAYMASTER_CONFIG.url;
       const walletSupportsPaymaster = !!paymasterCapability;
       
-      if (walletSupportsPaymaster) {
+      if (walletSupportsPaymaster && paymasterUrl) {
         // Only use sendCalls for wallets that support EIP-5792 (like Coinbase Smart Wallet)
+        // Capabilities must be keyed by chain ID per EIP-5792/ERC-7677
         const callData = encodeFunctionData({
           abi: CONTRACT_ABI,
           functionName: 'mint',
@@ -193,8 +194,10 @@ function ResultPage() {
             data: callData,
           }],
           capabilities: {
-            paymasterService: {
-              url: paymasterUrl || '',
+            [base.id]: {
+              paymasterService: {
+                url: paymasterUrl,
+              },
             },
           },
         });
