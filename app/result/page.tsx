@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain, useReadContract, useCapabilities, useSendCalls } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain, useReadContract, useCapabilities, useSendCalls, useCallsStatus } from 'wagmi';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense, useMemo } from 'react';
 import { type MoodResult } from '@/lib/mood-engine';
@@ -51,11 +51,34 @@ function ResultPage() {
   const [mode, setMode] = useState<'flex' | 'roast'>('flex');
 
   const { writeContract, data: hash, isPending } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+  const { isLoading: isConfirming, isSuccess: isWriteSuccess } = useWaitForTransactionReceipt({ hash });
   
   // Paymaster capabilities for gasless transactions
   const { data: capabilities } = useCapabilities();
   const { sendCalls, data: callsId, isPending: isCallsPending } = useSendCalls();
+  
+  // Track sendCalls status for gasless transactions
+  const { data: callsStatus } = useCallsStatus({
+    id: callsId as string,
+    query: { 
+      enabled: !!callsId,
+      refetchInterval: (data) => {
+        // Keep polling until confirmed or failed
+        if (data.state.data?.status === 'CONFIRMED' || data.state.data?.status === 'FAILED') {
+          return false;
+        }
+        return 1000; // Poll every second
+      },
+    },
+  });
+  
+  // Combined success state from either writeContract or sendCalls
+  const isCallsSuccess = callsStatus?.status === 'CONFIRMED';
+  const isSuccess = isWriteSuccess || isCallsSuccess;
+  const isCallsConfirming = !!callsId && callsStatus?.status === 'PENDING';
+  
+  // Get transaction hash from either method
+  const txHash = hash || callsStatus?.receipts?.[0]?.transactionHash;
   
   // Check if wallet supports paymaster (e.g., Coinbase Smart Wallet)
   const paymasterCapability = useMemo(() => {
@@ -473,12 +496,12 @@ function ResultPage() {
               ) : (
                 <button
                   onClick={handleMint}
-                  disabled={mintLoading || isPending || isCallsPending || isConfirming || !contractAddress || isCheckingMint}
+                  disabled={mintLoading || isPending || isCallsPending || isConfirming || isCallsConfirming || !contractAddress || isCheckingMint}
                   className="px-4 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed hover:translate-y-[-1px] hover:brightness-110 transition-all text-white"
                 >
                   {isCheckingMint
                     ? 'Checking...'
-                    : mintLoading || isPending || isCallsPending || isConfirming
+                    : mintLoading || isPending || isCallsPending || isConfirming || isCallsConfirming
                     ? 'Minting...'
                     : isGasless
                     ? 'Mint Badge (Free)'
@@ -487,17 +510,19 @@ function ResultPage() {
               )}
             </div>
 
-            {isSuccess && hash && (
+            {isSuccess && (
               <div className="mt-4 bg-green-500/20 border border-green-500/50 rounded-xl p-4 text-center">
                 <p className="text-green-400 mb-2">NFT minted successfully! 🎉</p>
-                <a
-                  href={`https://basescan.org/tx/${hash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-green-300 underline text-sm"
-                >
-                  View on BaseScan
-                </a>
+                {txHash && (
+                  <a
+                    href={`https://basescan.org/tx/${txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-300 underline text-sm"
+                  >
+                    View on BaseScan
+                  </a>
+                )}
               </div>
             )}
           </section>
