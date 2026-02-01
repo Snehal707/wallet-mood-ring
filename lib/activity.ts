@@ -9,13 +9,71 @@ interface Transaction {
   timeStamp: string;
 }
 
-// Common DEX/router addresses on Base
+// Common DEX/router addresses on Base (lowercase for comparison)
 const DEX_ROUTERS = [
-  '0x2626664c2603336E57B271c5C0b26F421741e481', // Uniswap V3 Router
+  // Uniswap
+  '0x2626664c2603336e57b271c5c0b26f421741e481', // Uniswap V3 Router
   '0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24', // Uniswap V2 Router
-  '0x7087e08107dF932A7b3C3e1A4e8C25c3c1c8B5D1', // Aerodrome Router
-  '0x6BDED42c6DA8FBf0d2bA55B2fa120C5e0c8D7891', // BaseSwap Router
-  '0x327Df1E6de05895d2ab08513aaDD9313fe505d86', // SwapRouter02
+  '0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad', // Uniswap Universal Router
+  '0x327df1e6de05895d2ab08513aadd9313fe505d86', // SwapRouter02
+  '0x198ef79f1f515f02dfe9e3115ed9fc07183f02fc', // Uniswap X
+  
+  // Aerodrome (Base native DEX)
+  '0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43', // Aerodrome Router
+  '0x6cb442acf35158d5eda88fe602221b67b400be3e', // Aerodrome Router V2
+  
+  // Other Base DEXs
+  '0x6bded42c6da8fbf0d2ba55b2fa120c5e0c8d7891', // BaseSwap Router
+  '0x1b8128c3a1b7d20053d10763ff02466ca7ff99fc', // SushiSwap Router
+  '0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f', // SushiSwap
+  
+  // Aggregators - Coinbase
+  '0xdef1c0ded9bec7f1a1670819833240f027b25eff', // 0x Exchange Proxy (Coinbase uses this)
+  '0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae', // LI.FI Diamond
+  '0x6352a56caadc4f1e25cd6c75970fa768a3304e64', // OpenOcean Exchange
+  
+  // 1inch
+  '0x1111111254eeb25477b68fb85ed929f73a960582', // 1inch v5 Router
+  '0x111111125421ca6dc452d289314280a0f8842a65', // 1inch v6 Router
+  
+  // ParaSwap
+  '0xdef171fe48cf0115b1d80b88dc8eab59176fee57', // ParaSwap V5
+  
+  // Kyber
+  '0x6131b5fae19ea4f9d964eac0408e4408b66337b5', // KyberSwap Router
+  
+  // Odos
+  '0x19ceead7105607cd444f5ad10dd51356436095a1', // Odos Router V2
+  
+  // Socket/Bungee
+  '0x3a23f943181408eac424116af7b7790c94cb97a5', // Socket Gateway
+];
+
+// Swap function signatures (to detect swaps even on unknown aggregators)
+const SWAP_SIGNATURES = [
+  '0x38ed1739', // swapExactTokensForTokens
+  '0x8803dbee', // swapTokensForExactTokens
+  '0x7ff36ab5', // swapExactETHForTokens
+  '0x4a25d94a', // swapTokensForExactETH
+  '0x18cbafe5', // swapExactTokensForETH
+  '0xfb3bdb41', // swapETHForExactTokens
+  '0x5c11d795', // swapExactTokensForTokensSupportingFeeOnTransferTokens
+  '0xb6f9de95', // swapExactETHForTokensSupportingFeeOnTransferTokens
+  '0x791ac947', // swapExactTokensForETHSupportingFeeOnTransferTokens
+  '0x04e45aaf', // exactInputSingle (Uniswap V3)
+  '0xb858183f', // exactInput (Uniswap V3)
+  '0x5023b4df', // exactOutputSingle (Uniswap V3)
+  '0x09b81346', // exactOutput (Uniswap V3)
+  '0x472b43f3', // swapExactTokensForTokens (Universal Router)
+  '0x42712a67', // swapTokensForExactTokens (Universal Router)
+  '0xd9627aa4', // sellToUniswap (0x)
+  '0x415565b0', // transformERC20 (0x)
+  '0x2e95b6c8', // unoswap (1inch)
+  '0xe449022e', // uniswapV3Swap (1inch)
+  '0x12aa3caf', // swap (1inch AggregationRouterV5)
+  '0x0502b1c5', // clipperSwap (1inch)
+  '0x83800a8e', // swapOnAerodromeV2 (Aerodrome)
+  '0x6678ec1f', // swapNoSplit (Odos)
 ];
 
 // Common NFT marketplace addresses on Base
@@ -114,22 +172,28 @@ export function analyzeTransactions(txs: Transaction[], _address: string): Walle
       const toLower = tx.to.toLowerCase();
       uniqueContracts.add(toLower);
 
-      if (DEX_ROUTERS.includes(toLower)) {
+      // Check if it's a swap - by contract OR by function signature
+      const funcSig = tx.input.slice(0, 10).toLowerCase();
+      const isSwapByContract = DEX_ROUTERS.includes(toLower);
+      const isSwapBySignature = SWAP_SIGNATURES.includes(funcSig);
+      
+      if (isSwapByContract || isSwapBySignature) {
         swaps++;
-        if (tx.input.length > 138) {
+        // LP interactions have longer calldata
+        if (tx.input.length > 500) {
           lpInteractions++;
         }
       }
 
-      if (NFT_MARKETPLACES.includes(toLower)) {
+      if (NFT_MARKETPLACES.map(a => a.toLowerCase()).includes(toLower)) {
         marketplaceInteractions++;
       }
 
-      if (BRIDGES.includes(toLower)) {
+      if (BRIDGES.map(a => a.toLowerCase()).includes(toLower)) {
         bridgeCount++;
       }
 
-      if (LENDING_PROTOCOLS.includes(toLower)) {
+      if (LENDING_PROTOCOLS.map(a => a.toLowerCase()).includes(toLower)) {
         lendingInteractions++;
       }
     }
