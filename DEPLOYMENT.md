@@ -27,7 +27,7 @@ npm install
 
 Create `contracts/.env`:
 ```env
-PRIVATE_KEY=YOUR_PRIVATE_KEY_HERE
+PRIVATE_KEY=
 BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
 ```
 

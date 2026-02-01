@@ -5,7 +5,6 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Logo } from '@/components/Logo';
-import { StatusChip } from '@/components/StatusChip';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
@@ -31,7 +30,11 @@ export default function Home() {
               Wallet Mood Ring
             </div>
           </div>
-          <StatusChip isConnected={isConnected} address={address} />
+          <ConnectButton 
+            accountStatus="address"
+            chainStatus="icon"
+            showBalance={false}
+          />
         </div>
 
         {/* Main Grid */}
@@ -74,7 +77,9 @@ export default function Home() {
                       onClick={connected ? openAccountModal : openConnectModal}
                       className="px-6 py-3.5 rounded-xl font-bold text-[15px] text-white bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] transition-all hover:translate-y-[-2px] hover:brightness-110"
                     >
-                      {connected ? 'Connected' : 'Connect Wallet'}
+                      {connected 
+                        ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}` 
+                        : 'Connect Wallet'}
                     </button>
                   );
                 }}

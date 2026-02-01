@@ -7,7 +7,7 @@ import { type MoodResult } from '@/lib/mood-engine';
 import { parseAbi, encodeFunctionData } from 'viem';
 import { base } from 'wagmi/chains';
 import { Logo } from '@/components/Logo';
-import { StatusChip } from '@/components/StatusChip';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { NFTPreview } from '@/components/NFTPreview';
 import { PAYMASTER_CONFIG } from '@/lib/paymaster-config';
 
@@ -319,7 +319,11 @@ function ResultPage() {
             >
               Mode: {mode === 'flex' ? 'Flex' : 'Roast'}
             </button>
-            <StatusChip isConnected={isConnected} address={address} />
+            <ConnectButton 
+              accountStatus="address"
+              chainStatus="icon"
+              showBalance={false}
+            />
           </div>
         </div>
 
