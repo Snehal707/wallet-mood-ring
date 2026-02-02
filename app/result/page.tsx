@@ -478,7 +478,7 @@ function ResultPage() {
             {!isGasless && !hasMinted && !isSuccess && (
               <div className="mb-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
                 <span className="text-xs text-[#94a3b8]">
-                  Gasless requires Coinbase Smart Wallet (passkey). Base gas is low for other wallets.
+                  Gasless requires Coinbase Smart Wallet. Base gas is low for other wallets.
                 </span>
               </div>
             )}

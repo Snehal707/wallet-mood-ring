@@ -6,6 +6,7 @@ const APP_URL = 'https://wallet-mood-ring.vercel.app';
 // Farcaster Mini App embed JSON (must be stringified in meta tag)
 const miniAppEmbed = {
   version: '1',
+  name: 'Wallet Mood Ring',
   imageUrl: `${APP_URL}/og-image.svg`,
   button: {
     title: 'Check Your Wallet Mood',
