@@ -468,7 +468,16 @@ function ResultPage() {
             {isGasless && !hasMinted && !isSuccess && (
               <div className="mb-3 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center gap-2">
                 <span className="text-green-400 text-xs">⚡</span>
-                <span className="text-green-400 text-xs font-medium">Gasless minting available - 0 ETH cost</span>
+                <span className="text-green-400 text-xs font-medium">
+                  Gasless with Coinbase Smart Wallet; Base gas is low for others.
+                </span>
+              </div>
+            )}
+            {!isGasless && !hasMinted && !isSuccess && (
+              <div className="mb-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-xs text-[#94a3b8]">
+                  Gasless requires Coinbase Smart Wallet (passkey). Base gas is low for other wallets.
+                </span>
               </div>
             )}
 
