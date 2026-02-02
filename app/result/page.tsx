@@ -58,10 +58,12 @@ function ResultPage() {
   const { sendCalls, data: callsId, isPending: isCallsPending } = useSendCalls();
   
   // Track sendCalls status for gasless transactions
+  // callsId is an object with shape { id: string, capabilities?: ... }
+  const callsIdString = typeof callsId === 'string' ? callsId : callsId?.id;
   const { data: callsStatus } = useCallsStatus({
-    id: callsId as string,
+    id: callsIdString as string,
     query: { 
-      enabled: !!callsId,
+      enabled: !!callsIdString,
       refetchInterval: (data) => {
         // Keep polling until confirmed or failed
         if (data.state.data?.status === 'CONFIRMED' || data.state.data?.status === 'FAILED') {
@@ -75,7 +77,7 @@ function ResultPage() {
   // Combined success state from either writeContract or sendCalls
   const isCallsSuccess = callsStatus?.status === 'CONFIRMED';
   const isSuccess = isWriteSuccess || isCallsSuccess;
-  const isCallsConfirming = !!callsId && callsStatus?.status === 'PENDING';
+  const isCallsConfirming = !!callsIdString && callsStatus?.status === 'PENDING';
   
   // Get transaction hash from either method
   const txHash = hash || callsStatus?.receipts?.[0]?.transactionHash;
