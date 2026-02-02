@@ -65,8 +65,8 @@ function ResultPage() {
     query: { 
       enabled: !!callsIdString,
       refetchInterval: (data) => {
-        // Keep polling until confirmed or failed
-        if (data.state.data?.status === 'CONFIRMED' || data.state.data?.status === 'FAILED') {
+        // Keep polling until confirmed or failed (lowercase status values)
+        if (data.state.data?.status === 'success' || data.state.data?.status === 'failure') {
           return false;
         }
         return 1000; // Poll every second
@@ -75,9 +75,9 @@ function ResultPage() {
   });
   
   // Combined success state from either writeContract or sendCalls
-  const isCallsSuccess = callsStatus?.status === 'CONFIRMED';
+  const isCallsSuccess = callsStatus?.status === 'success';
   const isSuccess = isWriteSuccess || isCallsSuccess;
-  const isCallsConfirming = !!callsIdString && callsStatus?.status === 'PENDING';
+  const isCallsConfirming = !!callsIdString && callsStatus?.status === 'pending';
   
   // Get transaction hash from either method
   const txHash = hash || callsStatus?.receipts?.[0]?.transactionHash;
