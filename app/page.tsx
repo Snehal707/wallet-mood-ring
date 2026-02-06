@@ -10,10 +10,6 @@ const miniAppEmbed = {
   imageUrl: `${APP_URL}/og-image.svg`,
   button: {
     title: 'Check Your Wallet Mood',
-    action: {
-      type: 'launch_miniapp',
-      url: APP_URL,
-    },
   },
 };
 

@@ -164,6 +164,23 @@ function ResultPage() {
 
     setMintLoading(true);
     try {
+      // Pre-flight check: simulate the transaction first
+      const simulateResponse = await fetch('/api/simulate-mint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address }),
+      });
+
+      if (simulateResponse.ok) {
+        const simData = await simulateResponse.json();
+        if (simData.simulation?.startsWith('❌')) {
+          throw new Error(simData.simulation.replace('❌ ', ''));
+        }
+        if (!simData.signerMatchesOwner) {
+          throw new Error('Server configuration error: Signer does not match contract owner. Please contact support.');
+        }
+      }
+
       const authResponse = await fetch('/api/mint-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -237,7 +254,19 @@ function ResultPage() {
       }
     } catch (error: any) {
       console.error('Mint failed:', error);
-      const errorMessage = error?.message || 'Mint failed. Please try again.';
+      let errorMessage = error?.message || 'Mint failed. Please try again.';
+      
+      // Provide more helpful error messages
+      if (errorMessage.includes('User rejected') || errorMessage.includes('User denied')) {
+        errorMessage = 'Transaction cancelled by user.';
+      } else if (errorMessage.includes('Already minted')) {
+        errorMessage = 'You have already minted this week\'s badge.';
+      } else if (errorMessage.includes('Invalid signature')) {
+        errorMessage = 'Signature verification failed. Please refresh and try again.';
+      } else if (errorMessage.includes('revert') || errorMessage.includes('execution reverted')) {
+        errorMessage = 'Transaction failed. Please check that you haven\'t already minted this week.';
+      }
+      
       alert(errorMessage);
     } finally {
       setMintLoading(false);

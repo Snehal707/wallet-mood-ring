@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ethers } from 'ethers';
-import { createPublicClient, http, encodeFunctionData } from 'viem';
+import { createPublicClient, http } from 'viem';
 import { base } from 'viem/chains';
 import { computeMood } from '@/lib/mood-engine';
 import { fetchBaseTransactions, analyzeTransactions } from '@/lib/activity';
@@ -26,6 +26,18 @@ const CONTRACT_ABI = [
     type: 'function',
     inputs: [{ name: 'user', type: 'address' }, { name: 'weekIndex', type: 'uint256' }],
     outputs: [{ name: '', type: 'bool' }],
+  },
+  {
+    name: 'DOMAIN_SEPARATOR',
+    type: 'function',
+    inputs: [],
+    outputs: [{ name: '', type: 'bytes32' }],
+  },
+  {
+    name: 'owner',
+    type: 'function',
+    inputs: [],
+    outputs: [{ name: '', type: 'address' }],
   },
 ];
 
@@ -97,6 +109,20 @@ export async function POST(request: NextRequest) {
       args: [address as `0x${string}`, BigInt(moodResult.weekIndex)],
     });
 
+    // Get contract owner and domain separator for debugging
+    const [contractOwner, contractDomainSeparator] = await Promise.all([
+      client.readContract({
+        address: contractAddress as `0x${string}`,
+        abi: CONTRACT_ABI,
+        functionName: 'owner',
+      }),
+      client.readContract({
+        address: contractAddress as `0x${string}`,
+        abi: CONTRACT_ABI,
+        functionName: 'DOMAIN_SEPARATOR',
+      }),
+    ]);
+
     // Simulate the transaction
     let simulationResult = null;
     let simulationError = null;
@@ -124,9 +150,11 @@ export async function POST(request: NextRequest) {
       if (error.message?.includes('Already minted this week')) {
         simulationError = '❌ Already minted this week';
       } else if (error.message?.includes('Invalid signature')) {
-        simulationError = '❌ Invalid signature';
+        simulationError = '❌ Invalid signature - Check that signer matches contract owner';
       } else if (error.message?.includes('Caller must be recipient')) {
         simulationError = '❌ Caller must be recipient';
+      } else if (error.message?.includes('Invalid mood') || error.message?.includes('Invalid rarity')) {
+        simulationError = `❌ ${error.message}`;
       }
     }
 
@@ -139,6 +167,8 @@ export async function POST(request: NextRequest) {
       hasMintedThisWeek: hasMinted,
       signature: signature.slice(0, 20) + '...',
       signerAddress: wallet.address,
+      contractOwner,
+      signerMatchesOwner: wallet.address.toLowerCase() === contractOwner.toLowerCase(),
       simulation: simulationResult || simulationError,
       rawError: simulationError ? simulationError.slice(0, 500) : null,
     });
