@@ -12,6 +12,8 @@
     "imageUrl": "https://wallet-mood-ring.vercel.app/og-image.png",
     "splashImageUrl": "https://wallet-mood-ring.vercel.app/splash.png",
     "splashBackgroundColor": "#0b1020",
-    "buttonTitle": "Check Your Wallet Mood"
+    "buttonTitle": "Check Your Wallet Mood",
+    "requiredChains": ["eip155:8453"],
+    "requiredCapabilities": ["wallet.getEthereumProvider"]
   }
 }
