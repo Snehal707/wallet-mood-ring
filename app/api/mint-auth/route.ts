@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
     // Verify the signature can be recovered (for debugging)
     let recoveredAddress = null;
     try {
-      // Use ethers to verify the signature
-      const recovered = ethers.utils.verifyTypedData(DOMAIN, TYPES, value, signature);
+      // Use ethers v6 to verify the signature (no .utils in v6)
+      const recovered = ethers.verifyTypedData(DOMAIN, TYPES, value, signature);
       recoveredAddress = recovered;
     } catch (e) {
       console.error('Failed to verify signature:', e);

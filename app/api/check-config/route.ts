@@ -55,7 +55,6 @@ export async function GET(request: NextRequest) {
       
       // Signer Configuration
       signerAddress: signerAddress,
-      signerPublicKey: wallet.publicKey, // This is the public key, not the address
       
       // Verification
       ownerMatch: ownerMatch,
