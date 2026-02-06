@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
         address: contractAddress as `0x${string}`,
         abi: CONTRACT_ABI,
         functionName: 'owner',
-      }),
+      }) as Promise<`0x${string}`>,
       client.readContract({
         address: contractAddress as `0x${string}`,
         abi: CONTRACT_ABI,
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
       signature: signature.slice(0, 20) + '...',
       signerAddress: wallet.address,
       contractOwner,
-      signerMatchesOwner: wallet.address.toLowerCase() === contractOwner.toLowerCase(),
+      signerMatchesOwner: wallet.address.toLowerCase() === (contractOwner as string).toLowerCase(),
       simulation: simulationResult || simulationError,
       rawError: simulationError ? simulationError.slice(0, 500) : null,
     });
