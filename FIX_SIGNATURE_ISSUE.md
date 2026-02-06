@@ -44,9 +44,10 @@ After updating and redeploying:
 
 ## Current Configuration
 
-- **Contract Address**: `0x613AaBFB890632AE2939FA6aEb065a692D4D7A32`
-- **Expected Contract Owner**: `0x79FD75a3fC633259aDD60885f927d973d3A3642b` (new wallet)
-- **PRIVATE_KEY in Vercel**: Should match the new wallet's private key
+- **Contract Address**: `0xf887C928Fb1Ad6eF0895c77E320Ae60a7e236B14`
+- **Contract Owner**: `0x79FD75a3fC633259aDD60885f927d973d3A3642b` (new wallet) ✅
+- **PRIVATE_KEY in Vercel**: Matches the new wallet's private key ✅
+- **Status**: ✅ CONFIGURED CORRECTLY - Signer matches contract owner
 
 ## Security Note
 

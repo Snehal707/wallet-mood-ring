@@ -96,8 +96,8 @@ wallet-mood-ring/
 ## Smart Contract
 
 - **Network:** Base Mainnet
-- **Contract Address:** `0x613AaBFB890632AE2939FA6aEb065a692D4D7A32`
-- **View on BaseScan:** [MoodBadge Contract](https://basescan.org/address/0x613AaBFB890632AE2939FA6aEb065a692D4D7A32)
+- **Contract Address:** `0xf887C928Fb1Ad6eF0895c77E320Ae60a7e236B14`
+- **View on BaseScan:** [MoodBadge Contract](https://basescan.org/address/0xf887C928Fb1Ad6eF0895c77E320Ae60a7e236B14)
 
 ## Author
 
