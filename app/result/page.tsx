@@ -164,19 +164,11 @@ function ResultPage() {
 
     setMintLoading(true);
     try {
-      // Pre-flight check: simulate the transaction first
-      const simulateResponse = await fetch('/api/simulate-mint', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address }),
-      });
-
-      if (simulateResponse.ok) {
-        const simData = await simulateResponse.json();
-        if (simData.simulation?.startsWith('❌')) {
-          throw new Error(simData.simulation.replace('❌ ', ''));
-        }
-        if (!simData.signerMatchesOwner) {
+      // Pre-flight check: verify owner match first
+      const debugResponse = await fetch(`/api/debug-owner?address=${address}`);
+      if (debugResponse.ok) {
+        const debugData = await debugResponse.json();
+        if (!debugData.ownerMatch) {
           throw new Error('Server configuration error: Signer does not match contract owner. Please contact support.');
         }
       }
