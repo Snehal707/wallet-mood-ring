@@ -7,7 +7,7 @@ const APP_URL = 'https://wallet-mood-ring.vercel.app';
 const miniAppEmbed = {
   version: '1',
   name: 'Wallet Mood Ring',
-  imageUrl: `${APP_URL}/og-image.svg`,
+  imageUrl: `${APP_URL}/og-image.png`,
   button: {
     title: 'Check Your Wallet Mood',
   },
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: APP_URL,
     images: [
       {
-        url: `${APP_URL}/og-image.svg`,
+        url: `${APP_URL}/og-image.png`,
       },
     ],
   },

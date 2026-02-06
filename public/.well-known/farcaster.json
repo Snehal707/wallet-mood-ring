@@ -7,10 +7,10 @@
   "frame": {
     "version": "1",
     "name": "Wallet Mood Ring",
-    "iconUrl": "https://wallet-mood-ring.vercel.app/icon.svg",
+    "iconUrl": "https://wallet-mood-ring.vercel.app/icon.png",
     "homeUrl": "https://wallet-mood-ring.vercel.app",
-    "imageUrl": "https://wallet-mood-ring.vercel.app/og-image.svg",
-    "splashImageUrl": "https://wallet-mood-ring.vercel.app/splash.svg",
+    "imageUrl": "https://wallet-mood-ring.vercel.app/og-image.png",
+    "splashImageUrl": "https://wallet-mood-ring.vercel.app/splash.png",
     "splashBackgroundColor": "#0b1020",
     "buttonTitle": "Check Your Wallet Mood"
   }
