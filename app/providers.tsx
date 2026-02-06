@@ -15,11 +15,8 @@ const queryClient = new QueryClient();
 const CONTEXT_TIMEOUT_MS = 2500;
 
 /**
- * Farcaster wallet detection & auto-connect per dtech.vision and Farcaster docs.
- * - Uses sdk.context for detection (resolves when inside Warpcast/Farcaster)
- * - Connect BEFORE ready() so user never sees Connect modal when in Mini App
- * - Disconnect any stale web connection, then connect with Farcaster connector
- * @see https://dtech.vision/farcaster/miniapps/howtosetupwalletconnectinminiappsandonthewebsite
+ * Farcaster: call ready() first to hide splash, then auto-connect wallet in background.
+ * @see https://miniapps.farcaster.xyz/docs/getting-started#making-your-app-display
  * @see https://miniapps.farcaster.xyz/docs/guides/wallets
  */
 function FarcasterSDKInit() {
@@ -31,6 +28,11 @@ function FarcasterSDKInit() {
   useEffect(() => {
     const init = async () => {
       if (hasTried) return;
+
+      // Call ready() first so splash hides immediately (per Farcaster docs)
+      try {
+        await sdk.actions.ready();
+      } catch (_) {}
 
       try {
         // Detect Farcaster: sdk.context (dtech) or getEthereumProvider (docs)
@@ -50,7 +52,6 @@ function FarcasterSDKInit() {
         }
 
         if (inFarcaster) {
-          // We're inside Farcaster (Warpcast) - use Farcaster wallet
           const isFarcasterConnector =
             connector?.type === 'farcasterMiniApp' ||
             connector?.type === 'farcasterFrame';
@@ -65,14 +66,7 @@ function FarcasterSDKInit() {
             });
           }
         }
-
-        // Call ready() - hide splash. Do this after connect when in Farcaster.
-        await sdk.actions.ready();
-      } catch (error) {
-        try {
-          await sdk.actions.ready();
-        } catch (_) {}
-      }
+      } catch (_) {}
       setHasTried(true);
     };
     init();
