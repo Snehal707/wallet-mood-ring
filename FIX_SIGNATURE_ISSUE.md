@@ -4,7 +4,7 @@
 
 After the private key compromise incident:
 1. ✅ **New wallet was created**: `0x79FD75a3fC633259aDD60885f927d973d3A3642b`
-2. ✅ **New contract was deployed**: `0x613AaBFB890632AE2939FA6aEb065a692D4D7A32`
+2. ✅ **New contract was deployed**: `0xf887C928Fb1Ad6eF0895c77E320Ae60a7e236B14`
 3. ❌ **PRIVATE_KEY in Vercel is still the OLD compromised wallet's key**
 
 This causes signature verification to fail because:
