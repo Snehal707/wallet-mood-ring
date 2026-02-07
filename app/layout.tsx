@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     description: 'Discover your wallet mood based on Base activity',
     type: 'website',
   },
+  other: {
+    'base:app_id': '69873b306dea3c7b8e149e7a',
+  },
 };
 
 export default function RootLayout({
