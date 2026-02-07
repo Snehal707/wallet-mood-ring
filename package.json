@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "convert-images": "node scripts/convert-svg-to-png.js"
+    "convert-images": "node scripts/convert-svg-to-png.js",
+    "verify-assets": "node scripts/verify-assets.js"
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.5.0",

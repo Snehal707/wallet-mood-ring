@@ -18,7 +18,7 @@
     "primaryCategory": "social",
     "tags": ["nft", "base", "mood", "wallet"],
     "tagline": "Discover your wallet mood",
-    "subtitle": "Analyze Base activity and mint weekly Mood Badges",
+    "subtitle": "Analyze Base activity and mint weekly mood badges",
     "heroImageUrl": "https://wallet-mood-ring.vercel.app/og-image.png",
     "screenshotUrls": [
       "https://wallet-mood-ring.vercel.app/screenshot-1.jpg",
