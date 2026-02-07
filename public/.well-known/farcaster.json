@@ -14,6 +14,16 @@
     "splashBackgroundColor": "#0b1020",
     "buttonTitle": "Check Your Wallet Mood",
     "requiredChains": ["eip155:8453"],
-    "requiredCapabilities": ["wallet.getEthereumProvider"]
+    "requiredCapabilities": ["wallet.getEthereumProvider"],
+    "primaryCategory": "social",
+    "tags": ["nft", "base", "mood", "wallet"],
+    "tagline": "Discover your wallet mood",
+    "subtitle": "Analyze Base activity and mint weekly Mood Badges",
+    "heroImageUrl": "https://wallet-mood-ring.vercel.app/og-image.png",
+    "screenshotUrls": [
+      "https://wallet-mood-ring.vercel.app/screenshot-1.jpg",
+      "https://wallet-mood-ring.vercel.app/screenshot-2.jpg",
+      "https://wallet-mood-ring.vercel.app/screenshot-3.jpg"
+    ]
   }
 }

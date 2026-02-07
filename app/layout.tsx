@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { BottomNav } from '@/components/BottomNav';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,11 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('wallet-mood-ring-theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var r=t||(d?'dark':'light');document.documentElement.setAttribute('data-theme',r==='light'?'light':'')})();`,
+          }}
+        />
+      </head>
       <body className={inter.className}>
-        <ErrorBoundary>
-          <Providers>{children}</Providers>
-        </ErrorBoundary>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <Providers>
+              <div className="pb-20">{children}</div>
+              <BottomNav />
+            </Providers>
+          </ErrorBoundary>
+        </ThemeProvider>
       </body>
     </html>
   );

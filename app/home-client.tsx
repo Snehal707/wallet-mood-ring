@@ -5,11 +5,16 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Logo } from '@/components/Logo';
+import { UserProfile } from '@/components/UserProfile';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Onboarding } from '@/components/Onboarding';
+import { useUserContext } from '@/hooks/useUserContext';
 
 export default function HomeClient() {
   const { address, isConnected } = useAccount();
   const router = useRouter();
   const [mode, setMode] = useState<'flex' | 'roast'>('flex');
+  const userContext = useUserContext();
 
   useEffect(() => {
     if (isConnected && address) {
@@ -19,6 +24,7 @@ export default function HomeClient() {
 
   return (
     <>
+      <Onboarding />
       <div className="noise" />
 
       <main className="relative z-10 max-w-[1100px] mx-auto px-5 py-8">
@@ -30,11 +36,10 @@ export default function HomeClient() {
               Wallet Mood Ring
             </div>
           </div>
-          <ConnectButton
-            accountStatus="address"
-            chainStatus="icon"
-            showBalance={false}
-          />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserProfile />
+          </div>
         </div>
 
         {/* Main Grid */}
@@ -61,7 +66,7 @@ export default function HomeClient() {
               </div>
               <div className="p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.2)]">
                 <h4 className="text-sm font-semibold mb-1 text-white">Gasless Minting</h4>
-                <p className="text-xs text-[#94a3b8]">Gasless with Coinbase Smart Wallet; Base gas is low for others.</p>
+                <p className="text-xs text-[#94a3b8]">Sponsored transactions when supported. Base gas is low for other wallets.</p>
               </div>
             </div>
 
@@ -72,14 +77,16 @@ export default function HomeClient() {
                   const ready = mounted;
                   const connected = ready && account && chain;
 
+                  const displayLabel = connected
+                    ? userContext?.displayName || userContext?.username || 'Connected'
+                    : 'Connect Wallet';
+
                   return (
                     <button
                       onClick={connected ? openAccountModal : openConnectModal}
-                      className="px-6 py-3.5 rounded-xl font-bold text-[15px] text-white bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] transition-all hover:translate-y-[-2px] hover:brightness-110"
+                      className="px-6 py-3.5 min-h-[44px] rounded-xl font-bold text-[15px] text-white bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] transition-all hover:translate-y-[-2px] hover:brightness-110"
                     >
-                      {connected
-                        ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}`
-                        : 'Connect Wallet'}
+                      {displayLabel}
                     </button>
                   );
                 }}
@@ -87,7 +94,7 @@ export default function HomeClient() {
 
               <button
                 onClick={() => setMode(mode === 'flex' ? 'roast' : 'flex')}
-                className="px-6 py-3.5 rounded-xl font-bold text-[15px] text-white bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] transition-all hover:bg-[rgba(255,255,255,0.1)]"
+                className="px-6 py-3.5 min-h-[44px] rounded-xl font-bold text-[15px] text-white bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] transition-all hover:bg-[rgba(255,255,255,0.1)]"
               >
                 Mode: {mode === 'flex' ? 'Flex' : 'Roast'}
               </button>

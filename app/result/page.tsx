@@ -8,6 +8,8 @@ import { parseAbi, encodeFunctionData } from 'viem';
 import { base } from 'wagmi/chains';
 import { Logo } from '@/components/Logo';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { UserProfile } from '@/components/UserProfile';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { NFTPreview } from '@/components/NFTPreview';
 import { PAYMASTER_CONFIG } from '@/lib/paymaster-config';
 
@@ -364,15 +366,12 @@ function ResultPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMode(mode === 'flex' ? 'roast' : 'flex')}
-              className="px-4 py-2 rounded-lg text-sm font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
+              className="px-4 py-2 min-h-[44px] rounded-lg text-sm font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
             >
               Mode: {mode === 'flex' ? 'Flex' : 'Roast'}
             </button>
-            <ConnectButton 
-              accountStatus="address"
-              chainStatus="icon"
-              showBalance={false}
-            />
+            <ThemeToggle />
+            <UserProfile />
           </div>
         </div>
 
@@ -492,14 +491,14 @@ function ResultPage() {
               <div className="mb-3 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center gap-2">
                 <span className="text-green-400 text-xs">⚡</span>
                 <span className="text-green-400 text-xs font-medium">
-                  Gasless with Coinbase Smart Wallet; Base gas is low for others.
+                  Sponsored transactions when supported. Base gas is low for other wallets.
                 </span>
               </div>
             )}
             {!isGasless && !hasMinted && !isSuccess && (
               <div className="mb-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
                 <span className="text-xs text-[#94a3b8]">
-                  Gasless requires Coinbase Smart Wallet. Base gas is low for other wallets.
+                  Sponsored transactions when supported. Base gas is low for other wallets.
                 </span>
               </div>
             )}
@@ -508,16 +507,16 @@ function ResultPage() {
             <div className="grid grid-cols-[1fr_2fr] gap-3">
               <button
                 onClick={handleShare}
-                className="px-4 py-3 rounded-xl font-bold text-sm bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
+                className="px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
               >
-                Share
+                Share to Feed
               </button>
               {isWrongNetwork ? (
-                <button
-                  onClick={() => switchChain({ chainId: base.id })}
-                  disabled={isSwitching}
-                  className="px-4 py-3 rounded-xl font-bold text-sm bg-orange-500 hover:bg-orange-400 disabled:opacity-50 disabled:cursor-not-allowed transition text-white"
-                >
+              <button
+                onClick={() => switchChain({ chainId: base.id })}
+                disabled={isSwitching}
+                className="px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-orange-500 hover:bg-orange-400 disabled:opacity-50 disabled:cursor-not-allowed transition text-white"
+              >
                   {isSwitching ? 'Switching...' : 'Switch to Base'}
                 </button>
               ) : hasMinted || isSuccess ? (
@@ -529,7 +528,7 @@ function ResultPage() {
                 <button
                   onClick={handleMint}
                   disabled={mintLoading || isPending || isCallsPending || isConfirming || isCallsConfirming || !contractAddress || isCheckingMint}
-                  className="px-4 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed hover:translate-y-[-1px] hover:brightness-110 transition-all text-white"
+                  className="px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] shadow-[0_4px_20px_rgba(119,0,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed hover:translate-y-[-1px] hover:brightness-110 transition-all text-white"
                 >
                   {isCheckingMint
                     ? 'Checking...'
