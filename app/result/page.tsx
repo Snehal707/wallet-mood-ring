@@ -359,14 +359,15 @@ function ResultPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4 cursor-pointer" onClick={() => router.push('/')}>
             <Logo className="w-9 h-9" style={{ filter: 'drop-shadow(0 0 8px rgba(5, 217, 232, 0.5))' }} />
-            <div className="text-2xl font-black tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <div className="header-title text-2xl font-black tracking-tight">
               Wallet Mood Ring
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMode(mode === 'flex' ? 'roast' : 'flex')}
-              className="px-4 py-2 min-h-[44px] rounded-lg text-sm font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
+              className="px-4 py-2 min-h-[44px] rounded-lg text-sm font-bold transition hover:opacity-90"
+              style={{ color: 'var(--color-text)', backgroundColor: 'var(--color-glass)', border: '1px solid var(--border)' }}
             >
               Mode: {mode === 'flex' ? 'Flex' : 'Roast'}
             </button>

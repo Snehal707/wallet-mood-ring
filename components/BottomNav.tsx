@@ -30,7 +30,7 @@ export function BottomNav() {
           onClick={goToHome}
           className="flex flex-col items-center gap-1 min-h-[44px] min-w-[60px] justify-center px-4 py-2 rounded-xl transition"
           style={{
-            color: isHome ? 'var(--neon-blue)' : 'var(--text-muted)',
+            color: isHome ? 'var(--neon-blue)' : 'var(--color-text-muted)',
             backgroundColor: isHome ? 'rgba(5, 217, 232, 0.1)' : 'transparent',
           }}
         >
@@ -44,7 +44,7 @@ export function BottomNav() {
           onClick={goToResult}
           className="flex flex-col items-center gap-1 min-h-[44px] min-w-[60px] justify-center px-4 py-2 rounded-xl transition"
           style={{
-            color: isResult ? 'var(--neon-purple)' : 'var(--text-muted)',
+            color: isResult ? 'var(--neon-purple)' : 'var(--color-text-muted)',
             backgroundColor: isResult ? 'rgba(119, 0, 255, 0.1)' : 'transparent',
           }}
         >

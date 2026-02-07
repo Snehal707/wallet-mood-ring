@@ -15,6 +15,10 @@
   --color-noise-opacity: 0.05;
   --gradient-bg: radial-gradient(circle at 15% 15%, rgba(119, 0, 255, 0.15) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(255, 42, 109, 0.12) 0%, transparent 40%);
+  /* Dark mode: card backgrounds */
+  --color-card: rgba(14, 17, 33, 0.6);
+  --color-card-dark: rgba(0, 0, 0, 0.2);
+  --color-header-title: linear-gradient(90deg, #ffffff 0%, #94a3b8 100%);
 }
 
 /* Light theme */
@@ -26,10 +30,14 @@
   --color-border: rgba(0, 0, 0, 0.1);
   --color-border-glow: rgba(0, 0, 0, 0.15);
   --color-text: #0f172a;
-  --color-text-muted: #64748b;
+  --color-text-muted: #475569;
   --color-noise-opacity: 0.03;
   --gradient-bg: radial-gradient(circle at 15% 15%, rgba(119, 0, 255, 0.06) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(255, 42, 109, 0.05) 0%, transparent 40%);
+  /* Light mode: card backgrounds for contrast */
+  --color-card: #f1f5f9;
+  --color-card-dark: #e2e8f0;
+  --color-header-title: linear-gradient(90deg, #0f172a 0%, #475569 100%);
 }
 
 /* Legacy vars for compatibility */
@@ -57,6 +65,21 @@ body {
   overflow-x: hidden;
   background-image: var(--gradient-bg);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Theme-aware header title gradient */
+.header-title {
+  background: linear-gradient(90deg, #ffffff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .header-title {
+  background: linear-gradient(90deg, #0f172a 0%, #475569 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Subtle Noise Texture */

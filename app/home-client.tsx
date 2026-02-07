@@ -32,7 +32,7 @@ export default function HomeClient() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Logo className="w-9 h-9" style={{ filter: 'drop-shadow(0 0 8px rgba(5, 217, 232, 0.5))' }} />
-            <div className="text-2xl font-black tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <div className="header-title text-2xl font-black tracking-tight">
               Wallet Mood Ring
             </div>
           </div>
@@ -50,23 +50,23 @@ export default function HomeClient() {
             {/* Neon Top Border */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--neon-pink)] via-[var(--neon-purple)] to-transparent" />
 
-            <h1 className="text-[52px] leading-none font-black tracking-tight mb-4">
+            <h1 className="text-[52px] leading-none font-black tracking-tight mb-4" style={{ color: 'var(--color-text)' }}>
               Wallet <span className="bg-gradient-to-r from-[#05d9e8] via-[#7700ff] to-[#ff2a6d] bg-clip-text text-transparent">Mood Ring</span>
             </h1>
 
-            <p className="text-[#94a3b8] text-[17px] leading-relaxed max-w-[460px] mb-6">
+            <p className="text-[17px] leading-relaxed max-w-[460px] mb-6" style={{ color: 'var(--color-text-muted)' }}>
               Your onchain activity reveals your soul. Discover your wallet personality from Base activity, then mint a weekly Mood Badge.
             </p>
 
             {/* Trust Cards */}
             <div className="grid grid-cols-2 gap-3 mb-7">
-              <div className="p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.2)]">
-                <h4 className="text-sm font-semibold mb-1 text-white">Read-Only Analysis</h4>
-                <p className="text-xs text-[#94a3b8]">We only read public data. No signing required to view.</p>
+              <div className="p-4 rounded-2xl border border-[var(--border)]" style={{ backgroundColor: 'var(--color-card-dark)' }}>
+                <h4 className="text-sm font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Read-Only Analysis</h4>
+                <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>We only read public data. No signing required to view.</p>
               </div>
-              <div className="p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.2)]">
-                <h4 className="text-sm font-semibold mb-1 text-white">Gasless Minting</h4>
-                <p className="text-xs text-[#94a3b8]">Sponsored transactions when supported. Base gas is low for other wallets.</p>
+              <div className="p-4 rounded-2xl border border-[var(--border)]" style={{ backgroundColor: 'var(--color-card-dark)' }}>
+                <h4 className="text-sm font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Gasless Minting</h4>
+                <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Sponsored transactions when supported. Base gas is low for other wallets.</p>
               </div>
             </div>
 
@@ -94,7 +94,8 @@ export default function HomeClient() {
 
               <button
                 onClick={() => setMode(mode === 'flex' ? 'roast' : 'flex')}
-                className="px-6 py-3.5 min-h-[44px] rounded-xl font-bold text-[15px] text-white bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] transition-all hover:bg-[rgba(255,255,255,0.1)]"
+                className="px-6 py-3.5 min-h-[44px] rounded-xl font-bold text-[15px] transition-all hover:opacity-90"
+                style={{ color: 'var(--color-text)', backgroundColor: 'var(--color-glass)', border: '1px solid var(--border)' }}
               >
                 Mode: {mode === 'flex' ? 'Flex' : 'Roast'}
               </button>
@@ -103,54 +104,54 @@ export default function HomeClient() {
             {/* Features Grid - Below CTA */}
             <div className="grid grid-cols-3 gap-3 mt-6">
               <div className="bg-[var(--glass)] p-3 rounded-xl border border-[var(--border)]">
-                <div className="text-[13px] font-semibold mb-1 text-white">Feed Ready</div>
-                <div className="text-[11px] text-[var(--text-muted)]">Perfect ratio for social sharing.</div>
+                <div className="text-[13px] font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Feed Ready</div>
+                <div className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>Perfect ratio for social sharing.</div>
               </div>
               <div className="bg-[var(--glass)] p-3 rounded-xl border border-[var(--border)]">
-                <div className="text-[13px] font-semibold mb-1 text-white">Weekly</div>
-                <div className="text-[11px] text-[var(--text-muted)]">New mood & badge every week.</div>
+                <div className="text-[13px] font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Weekly</div>
+                <div className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>New mood & badge every week.</div>
               </div>
               <div className="bg-[var(--glass)] p-3 rounded-xl border border-[var(--border)]">
-                <div className="text-[13px] font-semibold mb-1 text-white">Base Native</div>
-                <div className="text-[11px] text-[var(--text-muted)]">Fast, cheap, and onchain.</div>
+                <div className="text-[13px] font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Base Native</div>
+                <div className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>Fast, cheap, and onchain.</div>
               </div>
             </div>
           </section>
 
           {/* Preview Panel */}
           <aside>
-            <div className="relative p-7 rounded-3xl bg-[rgba(14,17,33,0.6)] border border-[var(--border)] backdrop-blur-[20px] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)]">
+            <div className="relative p-7 rounded-3xl border border-[var(--border)] backdrop-blur-[20px] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)]" style={{ backgroundColor: 'var(--color-card)' }}>
               <div className="flex justify-between items-center mb-5">
-                <small className="tracking-widest text-[#94a3b8] text-[11px] font-bold uppercase">Live Preview</small>
-                <div className="w-3 h-3 rounded-full bg-[#333] shadow-[inset_0_0_4px_rgba(0,0,0,0.5)]" />
+                <small className="tracking-widest text-[11px] font-bold uppercase" style={{ color: 'var(--color-text-muted)' }}>Live Preview</small>
+                <div className="w-3 h-3 rounded-full bg-[var(--color-text-muted)] opacity-50" />
               </div>
 
               <div className="text-[13px] text-[#05d9e8] font-bold mb-1">WEEK 05</div>
-              <h2 className="text-[38px] font-extrabold tracking-tight leading-tight mb-6 bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+              <h2 className="text-[38px] font-extrabold tracking-tight leading-tight mb-6 header-title">
                 Waiting for wallet...
               </h2>
 
               <div className="space-y-2.5 mb-6">
-                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-white/[0.02] border border-[var(--border)]">
-                  <div className="w-2 h-2 rounded-full bg-[#444]" />
-                  <span className="text-sm">-- Transactions</span>
+                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-[var(--color-glass)] border border-[var(--border)]">
+                  <div className="w-2 h-2 rounded-full bg-[var(--color-text-muted)] opacity-60" />
+                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>-- Transactions</span>
                 </div>
-                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-white/[0.02] border border-[var(--border)]">
-                  <div className="w-2 h-2 rounded-full bg-[#444]" />
-                  <span className="text-sm">-- Token Swaps</span>
+                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-[var(--color-glass)] border border-[var(--border)]">
+                  <div className="w-2 h-2 rounded-full bg-[var(--color-text-muted)] opacity-60" />
+                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>-- Token Swaps</span>
                 </div>
-                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-white/[0.02] border border-[var(--border)]">
-                  <div className="w-2 h-2 rounded-full bg-[#444]" />
-                  <span className="text-sm">-- Contract Approvals</span>
+                <div className="flex items-center gap-3.5 p-3 rounded-[14px] bg-[var(--color-glass)] border border-[var(--border)]">
+                  <div className="w-2 h-2 rounded-full bg-[var(--color-text-muted)] opacity-60" />
+                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>-- Contract Approvals</span>
                 </div>
               </div>
 
-              <div className="mb-6 p-3.5 rounded-xl bg-gradient-to-r from-[rgba(255,255,255,0.03)] to-transparent border border-[rgba(255,255,255,0.08)] flex justify-between items-center">
-                <small className="uppercase tracking-wider text-xs text-white">Rarity Tier</small>
-                <div className="font-black text-lg text-[#94a3b8]">???</div>
+              <div className="mb-6 p-3.5 rounded-xl bg-[var(--color-glass)] border border-[var(--border)] flex justify-between items-center">
+                <small className="uppercase tracking-wider text-xs" style={{ color: 'var(--color-text)' }}>Rarity Tier</small>
+                <div className="font-black text-lg" style={{ color: 'var(--color-text-muted)' }}>???</div>
               </div>
 
-              <div className="text-[13px] text-[#94a3b8] leading-relaxed italic border-l-2 border-[rgba(255,255,255,0.08)] pl-3">
+              <div className="text-[13px] leading-relaxed italic border-l-2 pl-3" style={{ color: 'var(--color-text-muted)', borderColor: 'var(--border)' }}>
                 Connect to reveal if you're a Builder, Degen, or Ghost.
               </div>
             </div>

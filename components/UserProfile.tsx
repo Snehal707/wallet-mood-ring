@@ -34,7 +34,8 @@ export function UserProfile() {
         return (
           <button
             onClick={openAccountModal}
-            className="flex items-center gap-2 min-h-[44px] px-3 py-2 rounded-xl bg-[rgba(255,255,255,0.05)] border border-[var(--border)] hover:bg-[rgba(255,255,255,0.08)] transition"
+            className="flex items-center gap-2 min-h-[44px] px-3 py-2 rounded-xl border border-[var(--border)] transition hover:opacity-90"
+            style={{ backgroundColor: 'var(--color-glass)' }}
           >
             {userContext?.pfpUrl ? (
               <img
@@ -47,7 +48,7 @@ export function UserProfile() {
                 {displayName.charAt(0).toUpperCase()}
               </div>
             )}
-            <span className="text-sm font-medium text-white truncate max-w-[100px]">
+            <span className="text-sm font-medium truncate max-w-[100px]" style={{ color: 'var(--color-text)' }}>
               {displayName}
             </span>
           </button>
