@@ -388,8 +388,8 @@ function ResultPage() {
         <main className="flex min-h-screen items-center justify-center relative z-10">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--neon-blue)] mx-auto"></div>
-            <p className="text-[var(--text-muted)]">Analyzing your wallet...</p>
-            <p className="text-sm text-[var(--text-muted)] opacity-70">This may take a few seconds</p>
+            <p style={{ color: 'var(--color-text-muted)' }}>Analyzing your wallet...</p>
+            <p className="text-sm opacity-70" style={{ color: 'var(--color-text-muted)' }}>This may take a few seconds</p>
           </div>
         </main>
       </>
@@ -471,7 +471,7 @@ function ResultPage() {
           <section 
             className="relative p-7 rounded-3xl backdrop-blur-[20px] transition-all duration-500"
             style={{
-              background: 'rgba(14, 17, 33, 0.6)',
+              backgroundColor: 'var(--color-card)',
               border: `1px solid ${colors.primary}44`,
               boxShadow: `0 20px 60px -10px ${colors.primary}22`,
             }}
@@ -483,7 +483,7 @@ function ResultPage() {
             />
 
             <div className="flex justify-between items-center mb-5">
-              <small className="tracking-widest text-[#94a3b8] text-[11px] font-bold uppercase">Your Mood</small>
+              <small className="tracking-widest text-[11px] font-bold uppercase" style={{ color: 'var(--color-text-muted)' }}>Your Mood</small>
               <div 
                 className="w-3 h-3 rounded-full transition-all duration-500"
                 style={{
@@ -500,14 +500,14 @@ function ResultPage() {
               WEEK {getWeekNumber()}
             </div>
             
-            <h2 className="text-[38px] font-extrabold tracking-tight leading-tight mb-6 bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+            <h2 className="text-[38px] font-extrabold tracking-tight leading-tight mb-6 header-title">
               {moodResult.moodName}
             </h2>
 
             {/* Pills with colored dots */}
             <div className="space-y-2.5 mb-6">
               {moodResult.reasons.map((reason, idx) => (
-                <div key={idx} className="flex items-center gap-3.5 p-3 rounded-[14px] bg-white/[0.02] border border-[var(--border)]">
+                <div key={idx} className="flex items-center gap-3.5 p-3 rounded-[14px] bg-[var(--color-glass)] border border-[var(--border)]">
                   <div 
                     className="w-2 h-2 rounded-full transition-all duration-300"
                     style={{
@@ -515,14 +515,14 @@ function ResultPage() {
                       boxShadow: `0 0 8px ${idx === 1 ? colors.secondary : colors.primary}`,
                     }}
                   />
-                  <span className="text-sm">{reason}</span>
+                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>{reason}</span>
                 </div>
               ))}
             </div>
 
             {/* Rarity */}
-            <div className="mb-6 p-3.5 rounded-xl bg-gradient-to-r from-[rgba(255,255,255,0.03)] to-transparent border border-[rgba(255,255,255,0.08)] flex justify-between items-center">
-              <small className="uppercase tracking-wider text-xs text-white">Rarity Tier</small>
+            <div className="mb-6 p-3.5 rounded-xl bg-[var(--color-glass)] border border-[var(--border)] flex justify-between items-center">
+              <small className="uppercase tracking-wider text-xs" style={{ color: 'var(--color-text)' }}>Rarity Tier</small>
               <div 
                 className="font-black text-lg transition-all"
                 style={{ 
@@ -535,8 +535,8 @@ function ResultPage() {
             </div>
 
             {/* Caption */}
-            <div className="text-[13px] text-[#94a3b8] leading-relaxed italic border-l-2 pl-3 mb-6"
-              style={{ borderColor: colors.primary + '44' }}
+            <div className="text-[13px] leading-relaxed italic border-l-2 pl-3 mb-6"
+              style={{ color: 'var(--color-text-muted)', borderColor: colors.primary + '44' }}
             >
               {getMoodCaption()}
             </div>
@@ -565,8 +565,8 @@ function ResultPage() {
               </div>
             )}
             {!isGasless && !hasMinted && !isSuccess && (
-              <div className="mb-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-                <span className="text-xs text-[#94a3b8]">
+              <div className="mb-3 px-3 py-2 rounded-lg bg-[var(--color-glass)] border border-[var(--border)]">
+                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                   Sponsored transactions when supported. Base gas is low for other wallets.
                 </span>
               </div>
@@ -577,7 +577,8 @@ function ResultPage() {
               <div className="relative">
                 <button
                   onClick={() => setShowShareMenu((v) => !v)}
-                  className="w-full px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white flex items-center justify-center gap-2"
+                  className="w-full px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 hover:opacity-90"
+                  style={{ color: 'var(--color-text)', backgroundColor: 'var(--color-glass)', border: '1px solid var(--border)' }}
                 >
                   Share
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -676,32 +677,32 @@ function ResultPage() {
 
           {/* Stats Panel */}
           <aside className="space-y-6">
-            <div className="p-7 rounded-3xl bg-[rgba(14,17,33,0.6)] border border-[rgba(255,255,255,0.08)] backdrop-blur-[20px]">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-[#94a3b8] mb-4">Activity Stats</h3>
+            <div className="p-7 rounded-3xl border border-[var(--border)] backdrop-blur-[20px]" style={{ backgroundColor: 'var(--color-card)' }}>
+              <h3 className="text-sm font-bold uppercase tracking-wider mb-4" style={{ color: 'var(--color-text-muted)' }}>Activity Stats</h3>
               
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-[#94a3b8]">Transactions (7d)</span>
-                  <span className="font-bold text-white">{moodResult.stats.tx7d}</span>
+                  <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Transactions (7d)</span>
+                  <span className="font-bold" style={{ color: 'var(--color-text)' }}>{moodResult.stats.tx7d}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-[#94a3b8]">Token Swaps</span>
-                  <span className="font-bold text-white">{moodResult.stats.swaps7d}</span>
+                  <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Token Swaps</span>
+                  <span className="font-bold" style={{ color: 'var(--color-text)' }}>{moodResult.stats.swaps7d}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-[#94a3b8]">Approvals</span>
-                  <span className="font-bold text-white">{moodResult.stats.approvals7d}</span>
+                  <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Approvals</span>
+                  <span className="font-bold" style={{ color: 'var(--color-text)' }}>{moodResult.stats.approvals7d}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-[#94a3b8]">Unique Contracts</span>
-                  <span className="font-bold text-white">{moodResult.stats.uniqueContracts}</span>
+                  <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Unique Contracts</span>
+                  <span className="font-bold" style={{ color: 'var(--color-text)' }}>{moodResult.stats.uniqueContracts}</span>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[rgba(14,17,33,0.6)] border border-[rgba(255,255,255,0.08)] backdrop-blur-[20px] text-center">
-              <p className="text-xs text-[#94a3b8] mb-2">Built on Base</p>
-              <p className="text-xs text-[#94a3b8]">Powered by Mini Apps</p>
+            <div className="p-6 rounded-3xl border border-[var(--border)] backdrop-blur-[20px] text-center" style={{ backgroundColor: 'var(--color-card)' }}>
+              <p className="text-xs mb-2" style={{ color: 'var(--color-text-muted)' }}>Built on Base</p>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Powered by Mini Apps</p>
             </div>
           </aside>
 
@@ -720,7 +721,7 @@ export default function ResultPageWrapper() {
         <main className="flex min-h-screen items-center justify-center relative z-10">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--neon-blue)] mx-auto"></div>
-            <p className="text-[var(--text-muted)]">Loading...</p>
+            <p style={{ color: 'var(--color-text-muted)' }}>Loading...</p>
           </div>
         </main>
       </>
