@@ -6,6 +6,7 @@ import { useEffect, useState, Suspense, useMemo } from 'react';
 import { type MoodResult } from '@/lib/mood-engine';
 import { parseAbi, encodeFunctionData } from 'viem';
 import { base } from 'wagmi/chains';
+import sdk from '@farcaster/miniapp-sdk';
 import { Logo } from '@/components/Logo';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { UserProfile } from '@/components/UserProfile';
@@ -51,6 +52,7 @@ function ResultPage() {
   const [loading, setLoading] = useState(true);
   const [mintLoading, setMintLoading] = useState(false);
   const [mode, setMode] = useState<'flex' | 'roast'>('flex');
+  const [showShareMenu, setShowShareMenu] = useState(false);
 
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isWriteSuccess } = useWaitForTransactionReceipt({ hash });
@@ -267,16 +269,65 @@ function ResultPage() {
     }
   };
 
-  const handleShare = () => {
-    if (!moodResult) return;
+  const getShareText = () => {
+    if (!moodResult) return '';
+    return `My wallet mood: ${moodResult.moodName}! 🎭\n\n${moodResult.reasons.join('\n')}\n\nCheck yours at `;
+  };
 
-    const text = `My wallet mood: ${moodResult.moodName}! 🎭\n\n${moodResult.reasons.join('\n')}\n\nCheck yours at ${window.location.origin}`;
-    
-    if (navigator.share) {
-      navigator.share({ text });
-    } else {
-      navigator.clipboard.writeText(text);
+  const getShareUrl = () => {
+    if (typeof window === 'undefined') return '';
+    return window.location.href;
+  };
+
+  const handleShareToFeed = async () => {
+    if (!moodResult) return;
+    setShowShareMenu(false);
+    const url = getShareUrl();
+    const text = getShareText() + url;
+    try {
+      await sdk.actions.composeCast({
+        text,
+        embeds: [url],
+        channelKey: 'base',
+      });
+    } catch {
+      try {
+        if (navigator.share) {
+          await navigator.share({ text, url });
+        } else {
+          await navigator.clipboard.writeText(text);
+          alert('Copied to clipboard!');
+        }
+      } catch {
+        await navigator.clipboard.writeText(text);
+        alert('Copied to clipboard!');
+      }
+    }
+  };
+
+  const handleShareTwitter = () => {
+    setShowShareMenu(false);
+    const text = getShareText() + getShareUrl();
+    const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(u, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleShareTelegram = () => {
+    setShowShareMenu(false);
+    const url = getShareUrl();
+    const text = getShareText();
+    const u = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    window.open(u, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleCopyLink = async () => {
+    setShowShareMenu(false);
+    const text = getShareText() + getShareUrl();
+    try {
+      await navigator.clipboard.writeText(text);
       alert('Copied to clipboard!');
+    } catch {
+      alert('Could not copy');
     }
   };
 
@@ -506,12 +557,52 @@ function ResultPage() {
 
             {/* Action Buttons */}
             <div className="grid grid-cols-[1fr_2fr] gap-3">
-              <button
-                onClick={handleShare}
-                className="px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white"
-              >
-                Share to Feed
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setShowShareMenu((v) => !v)}
+                  className="w-full px-4 py-3 min-h-[44px] rounded-xl font-bold text-sm bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.1)] transition text-white flex items-center justify-center gap-2"
+                >
+                  Share
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {showShareMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowShareMenu(false)} aria-hidden="true" />
+                    <div className="absolute left-0 top-full mt-2 z-50 min-w-[180px] rounded-xl border border-[var(--border)] bg-[var(--color-bg-surface)] shadow-xl py-2">
+                      <button
+                        onClick={handleShareToFeed}
+                        className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        <span>📣</span> Share to Feed (Base/Farcaster)
+                      </button>
+                      <button
+                        onClick={handleShareTwitter}
+                        className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        <span>𝕏</span> Share on X
+                      </button>
+                      <button
+                        onClick={handleShareTelegram}
+                        className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        <span>✈️</span> Share on Telegram
+                      </button>
+                      <button
+                        onClick={handleCopyLink}
+                        className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        <span>🔗</span> Copy link
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
               {isWrongNetwork ? (
               <button
                 onClick={() => switchChain({ chainId: base.id })}
