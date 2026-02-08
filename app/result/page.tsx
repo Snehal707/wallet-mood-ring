@@ -570,7 +570,7 @@ function ResultPage() {
                 {showShareMenu && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setShowShareMenu(false)} aria-hidden="true" />
-                    <div className="absolute left-0 top-full mt-2 z-50 min-w-[180px] rounded-xl border border-[var(--border)] bg-[var(--color-bg-surface)] shadow-xl py-2">
+                    <div className="absolute left-0 bottom-full mb-2 z-50 min-w-[180px] rounded-xl border border-[var(--border)] bg-[var(--color-bg-surface)] shadow-xl py-2">
                       <button
                         onClick={handleShareToFeed}
                         className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
