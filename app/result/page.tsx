@@ -30,6 +30,10 @@ const RARITY_COLORS: Record<number, { text: string; color: string }> = {
   2: { text: 'LEGENDARY', color: '#f9e000' },
 };
 
+const BASE_APP_URL = 'https://base.app/app/https://wallet-mood-ring.vercel.app';
+const FARCASTER_URL = 'https://farcaster.xyz/miniapps/pEvZGrdEn51h/wallet-mood-ring';
+const APP_ORIGIN = 'https://wallet-mood-ring.vercel.app';
+
 const CONTRACT_ABI = parseAbi([
   'function mint(address to, uint256 weekIndex, uint8 moodId, uint32 tx7d, uint32 swaps7d, uint32 approvals7d, uint8 rarityId, bytes signature) external',
   'function hasMintedWeek(address user, uint256 weekIndex) view returns (bool)',
@@ -279,21 +283,31 @@ function ResultPage() {
     return window.location.href;
   };
 
-  const handleShareToFeed = async () => {
+  const getNftImageUrl = () => {
+    if (!moodResult) return '';
+    const params = new URLSearchParams({
+      moodId: String(moodResult.moodId),
+      weekIndex: String(moodResult.weekIndex),
+      rarityId: String(moodResult.rarityId),
+      tx7d: String(moodResult.stats.tx7d),
+      swaps7d: String(moodResult.stats.swaps7d),
+      approvals7d: String(moodResult.stats.approvals7d),
+    });
+    return `${APP_ORIGIN}/api/nft-og?${params.toString()}`;
+  };
+
+  const shareToFeed = async (channelKey: 'base' | 'farcaster', appUrl: string) => {
     if (!moodResult) return;
     setShowShareMenu(false);
-    const url = getShareUrl();
-    const text = getShareText() + url;
+    const nftImageUrl = getNftImageUrl();
+    const text = getShareText() + appUrl;
+    const embeds: [string] | [string, string] = nftImageUrl ? [nftImageUrl, appUrl] : [appUrl];
     try {
-      await sdk.actions.composeCast({
-        text,
-        embeds: [url],
-        channelKey: 'base',
-      });
+      await sdk.actions.composeCast({ text, embeds, channelKey });
     } catch {
       try {
         if (navigator.share) {
-          await navigator.share({ text, url });
+          await navigator.share({ text, url: appUrl });
         } else {
           await navigator.clipboard.writeText(text);
           alert('Copied to clipboard!');
@@ -304,6 +318,9 @@ function ResultPage() {
       }
     }
   };
+
+  const handleShareToBaseFeed = () => shareToFeed('base', BASE_APP_URL);
+  const handleShareToFarcasterFeed = () => shareToFeed('farcaster', FARCASTER_URL);
 
   const handleShareTwitter = () => {
     setShowShareMenu(false);
@@ -572,11 +589,18 @@ function ResultPage() {
                     <div className="fixed inset-0 z-40" onClick={() => setShowShareMenu(false)} aria-hidden="true" />
                     <div className="absolute left-0 bottom-full mb-2 z-50 min-w-[180px] rounded-xl border border-[var(--border)] bg-[var(--color-bg-surface)] shadow-xl py-2">
                       <button
-                        onClick={handleShareToFeed}
+                        onClick={handleShareToBaseFeed}
                         className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
                         style={{ color: 'var(--color-text)' }}
                       >
-                        <span>📣</span> Share to Feed (Base/Farcaster)
+                        <span>📣</span> Share to Base Feed
+                      </button>
+                      <button
+                        onClick={handleShareToFarcasterFeed}
+                        className="w-full px-4 py-2.5 text-left text-sm font-medium hover:bg-[var(--color-glass)] flex items-center gap-3"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        <span>📢</span> Share to Farcaster Feed
                       </button>
                       <button
                         onClick={handleShareTwitter}
